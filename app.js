@@ -1,4 +1,5 @@
 const express = require("express");
+const bcrypt = require("bcryptjs")
 const app = express();
 require("./src/config");
 const database = require("./src/schema")
@@ -51,16 +52,27 @@ app.get("/sign_in",(req,res)=>{
 app.post("/sign_in",async(req,res)=>{
     try{
     let data = await database.find(
-    { phone: req.body.phone, password: req.body.password });
-
-    console.log(data)
+    { phone: req.body.phone });
 
     if(data.length!=0){
-        res.redirect("signin_sucess.html")
+        console.log(data);
+        const isPasswordValid = bcrypt.compareSync(req.body.password, data[0].password);
+        if (isPasswordValid) {
+            res.redirect("signin_sucess.html");
+            console.log(isPasswordValid)
+          } else {
+            res.send("Invalid credentials");
+            console.log(isPasswordValid)
+          }
+        
     }
     else{
-        res.send("invalid credentials")
+        console.log(data)
+        res.send("user not found")
     }
+    
+    
+    
 
 }
 catch(e){
