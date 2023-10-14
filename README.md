@@ -8,3 +8,8 @@ this is a signin and signup system.
 
 ## Run:
 - run command `nodemon app.js`.
+- signup first if u are visiting at first time.
+
+## features:
+- stores your password in very secure way [password hashing is used].
+- 
